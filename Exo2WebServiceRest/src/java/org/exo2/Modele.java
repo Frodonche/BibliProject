@@ -269,5 +269,32 @@ public class Modele {
             tmp.setAdresse(c.getAdresse());
         }
     }
-
+    
+    public ArrayList<Book> searchBookAuteur(String auteur){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getAuteur().equals(auteur))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
+    public ArrayList<Book> searchBookTitre(String titre){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getTitre().equals(titre))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
+    public ArrayList<Book> searchBookCategorie(String categorie){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getCategorie().equals(categorie))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
 }
