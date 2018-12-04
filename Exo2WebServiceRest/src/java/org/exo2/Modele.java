@@ -28,7 +28,18 @@ public class Modele {
     }
     
     public void addBook(Book book){
-        this.myBooks.add(book);
+        Book tmp = searchBook(book.getIsbn());
+        if(tmp == null){
+            this.myBooks.add(book);
+        }else{
+            tmp.setQuantite(tmp.getQuantite()+book.getQuantite());
+        }
+    }
+    
+    public void deleteBook(Book book){
+        if(searchBook(book.getIsbn()) != null){
+            myBooks.remove(book);
+        }
     }
     
     public void addBorrow(Borrow borrow){
@@ -38,6 +49,21 @@ public class Modele {
     public void addCustomer(Customer customer){
         this.myCustomers.add(customer);
     }
+    
+    public String toXML(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += "<bibliotheque>";
+        for(Book b : myBooks)
+            toReturn += b.toXML();
+        for(Borrow bo : myBorrows)
+            toReturn += bo.toXML();
+        for(Customer c : myCustomers)
+            toReturn += c.toXML();
+        toReturn += "</bibliotheque>";
+        
+        return toReturn;
+    }
+    
     
     public Book searchBook(int isbn){
         int i = 0;

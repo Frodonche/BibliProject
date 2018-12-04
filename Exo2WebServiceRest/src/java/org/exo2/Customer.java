@@ -33,4 +33,22 @@ public class Customer {
     
     public String adresse(){ return this.adresse; }
     public void setAdresse(String adresse){ this.adresse = adresse; }
+    
+    public String toXML(){
+        String toReturn = "<customer>";
+        toReturn += "<numero>"+numero+"</numero>";
+        toReturn += "<nom>"+nom+"</nom>";
+        toReturn += "<prenom>"+prenom+"</prenom>";
+        toReturn += "<adresse>"+adresse+"</adresse>";
+        toReturn += "</customer>";
+        
+        return toReturn;
+    }
+    
+    public String toXMLWithHeader(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += toXML();
+        
+        return toReturn;
+    }
 }

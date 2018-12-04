@@ -23,4 +23,20 @@ public class Borrow {
     
     public int getNumCustomer(){ return this.numCustomer; }
     public void setNumCustomer(int numCustomer){ this.numCustomer = numCustomer; }
+    
+    public String toXML(){
+        String toReturn = "<borrow>";
+        toReturn += "<isbn>"+isbn+"</isbn>";
+        toReturn += "<numCustomer>"+numCustomer+"</numCustomer>";
+        toReturn +="</borrow>";
+        
+        return toReturn;
+    }
+    
+    public String toXMLWithHeader(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += toXML();
+        
+        return toReturn;
+    }
 }
