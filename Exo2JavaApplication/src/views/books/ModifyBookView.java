@@ -43,6 +43,9 @@ public class ModifyBookView extends JPanel implements View{
         JLabel categorieL = new JLabel("Categorie ");
         JTextField categorieT = new JTextField();
         
+        JLabel quantiteL = new JLabel("Quantite ");
+        JTextField quantiteT = new JTextField();
+        
         JButton validateButton = new JButton("Valider modification");
         
         GridBagConstraints c = new GridBagConstraints();
@@ -92,8 +95,18 @@ public class ModifyBookView extends JPanel implements View{
         this.add(categorieT, c);
         
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 5;
+        this.add(quantiteL, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
         c.gridy = 5;
+        this.add(quantiteT, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 6;
         this.add(validateButton, c);
         
         this.setVisible(true);
