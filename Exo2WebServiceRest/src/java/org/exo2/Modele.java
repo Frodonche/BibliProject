@@ -42,6 +42,17 @@ public class Modele {
         }
     }
     
+    public void updateBook(Book book){
+        Book tmp = searchBook(book.getIsbn());
+        if(tmp != null){
+            tmp.setAuteur(book.getAuteur());
+            tmp.setCategorie(book.getCategorie());
+            tmp.setIsbn(book.getIsbn());
+            tmp.setTitre(book.getTitre());
+            tmp.setQuantite(book.getQuantite());
+        }
+    }
+      
     public void addBorrow(Borrow borrow){
         this.myBorrows.add(borrow);
     }
