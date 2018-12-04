@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author guillaume
  */
 public class Modele {
+    private static Modele INSTANCE = new Modele();
     private ArrayList<Book> myBooks;
     private ArrayList<Borrow> myBorrows;
     private ArrayList<Customer> myCustomers;
@@ -20,6 +21,10 @@ public class Modele {
         this.myBooks = new ArrayList<Book>();
         this.myBorrows = new ArrayList<Borrow>();
         this.myCustomers = new ArrayList<Customer>();
+    }
+    
+    public static Modele getInstance(){
+        return INSTANCE;
     }
     
     public void addBook(Book book){
