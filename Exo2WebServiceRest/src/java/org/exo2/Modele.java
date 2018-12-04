@@ -76,7 +76,95 @@ public class Modele {
         return toReturn;
     }
     
+    public String getBooksXML(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        for(Book b : myBooks)
+            toReturn += b.toXML();
+        
+        return toReturn;
+    }
+    
+    public String getBooksJSON(){
+        int cpt = 0;
+        String toReturn = "{";
+     
+        if(myBooks.size() > 0){
+            toReturn += "\"books\":[";
+            
+            for(Book b : myBooks){
+                if(cpt > 0)
+                    toReturn += ",";
+                else
+                    cpt++;
+                
+                toReturn += b.toJSON();
+            }
+            toReturn += "]";
+        }
+        
+        toReturn += "}";
+        
+        return toReturn;
+    }
+    
  
+    public String toJSON(){
+        int cpt = 0;
+        String toReturn = "{";
+        
+       
+        if(myBooks.size() > 0){
+            toReturn += "\"books\":[";
+            
+            for(Book b : myBooks){
+                if(cpt > 0)
+                    toReturn += ",";
+                else
+                    cpt++;
+                
+                toReturn += b.toJSON();
+            }
+            toReturn += "]";
+        }
+        
+        toReturn += ",";
+        
+        if(myBorrows.size() > 0){
+            cpt = 0;
+            toReturn += "\"borrows\":[";
+            
+            for(Borrow b : myBorrows){
+                if(cpt > 0)
+                    toReturn += ",";
+                else
+                    cpt++;
+                
+                toReturn += b.toJSON();
+            }
+            toReturn += "]";
+        }
+        
+        toReturn += ",";
+        
+        if(myCustomers.size() > 0){
+            cpt = 0;
+            toReturn += "\"customers\":[";
+            
+            for(Customer c : myCustomers){
+                if(cpt > 0)
+                    toReturn += ",";
+                else
+                    cpt++;
+                
+                toReturn += c.toJSON();
+            }
+            toReturn += "]";
+        }
+        
+        toReturn += "}";
+        
+        return toReturn;
+    }
     
     
     public Book searchBook(int isbn){
