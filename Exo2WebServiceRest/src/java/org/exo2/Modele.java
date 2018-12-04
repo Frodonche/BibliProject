@@ -75,6 +75,8 @@ public class Modele {
         return toReturn;
     }
     
+ 
+    
     
     public Book searchBook(int isbn){
         int i = 0;

@@ -31,7 +31,7 @@ public class Customer {
     public String getPrenom(){ return this.prenom; }
     public void setPrenom(String prenom){ this.prenom = prenom; }
     
-    public String adresse(){ return this.adresse; }
+    public String getAdresse(){ return this.adresse; }
     public void setAdresse(String adresse){ this.adresse = adresse; }
     
     public String toXML(){
@@ -48,6 +48,18 @@ public class Customer {
     public String toXMLWithHeader(){
         String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         toReturn += toXML();
+        
+        return toReturn;
+    }
+    
+    public String toJSON(){
+        String toReturn = "{";
+        toReturn += "\"numero\":"+numero+",";
+        toReturn += "\"nom\":"+"\""+nom+"\",";
+        toReturn += "\"prenom\":"+"\""+prenom+"\",";
+        toReturn += "\"adresse\":"+"\""+adresse+"\"";
+        
+        toReturn += "}";
         
         return toReturn;
     }
