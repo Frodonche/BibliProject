@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author guillaume
  */
 public class Modele {
+    private static Modele INSTANCE = new Modele();
     private ArrayList<Book> myBooks;
     private ArrayList<Borrow> myBorrows;
     private ArrayList<Customer> myCustomers;
@@ -22,8 +23,23 @@ public class Modele {
         this.myCustomers = new ArrayList<Customer>();
     }
     
+    public static Modele getInstance(){
+        return INSTANCE;
+    }
+    
     public void addBook(Book book){
-        this.myBooks.add(book);
+        Book tmp = searchBook(book.getIsbn());
+        if(tmp == null){
+            this.myBooks.add(book);
+        }else{
+            tmp.setQuantite(tmp.getQuantite()+book.getQuantite());
+        }
+    }
+    
+    public void deleteBook(Book book){
+        if(searchBook(book.getIsbn()) != null){
+            myBooks.remove(book);
+        }
     }
     
     public void addBorrow(Borrow borrow){
@@ -49,4 +65,26 @@ public class Modele {
     }
     
     
+    public Book searchBook(int isbn){
+        int i = 0;
+        while ( i < myBooks.size()-1 ){
+            if ( myBooks.get(i).getIsbn() == isbn ){
+                return myBooks.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
+    
+    public Customer searchCustomer(int numero){
+        int i = 0;
+        while ( i < myCustomers.size()-1 ){
+            if ( myCustomers.get(i).getNumero() == numero ){
+                return myCustomers.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
+
 }
