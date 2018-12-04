@@ -5,6 +5,7 @@
  */
 package org.exo2;
 
+import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author frlallemand
  */
-@Path("inscription")
+@Path("customer")
 public class CustomerResource {
 
     @Context
@@ -49,4 +50,33 @@ public class CustomerResource {
             instance.addCustomer(new Customer(numero, nom, prenom, adresse));
         };
     }
+    
+    @GET
+    @Path("searchCustomerXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String searchCustomerXML(@QueryParam("numero") int numero) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c == null) {
+            String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> ERROR: Not found";
+            return toReturn;
+        } else {
+            return c.toXMLWithHeader();
+        }        
+    }
+
+    @GET
+    @Path("searchCustomerJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchCustomerJSON(@QueryParam("numero") int numero) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c == null) {
+            String toReturn = "{}";
+            return toReturn;
+        } else {
+            return c.toJSON();
+        }        
+    }
+
 }
