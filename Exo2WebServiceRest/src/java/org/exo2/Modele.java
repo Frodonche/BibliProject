@@ -36,9 +36,9 @@ public class Modele {
         }
     }
     
-    public void deleteBook(Book book){
-        if(searchBook(book.getIsbn()) != null){
-            myBooks.remove(book);
+    public void deleteBook(int isbn){
+        if(searchBook(isbn) != null){
+            myBooks.remove(searchBook(isbn));
         }
     }
     
