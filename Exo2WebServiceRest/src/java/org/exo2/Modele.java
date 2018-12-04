@@ -33,4 +33,15 @@ public class Modele {
     public void addCustomer(Customer customer){
         this.myCustomers.add(customer);
     }
+    
+    public Book searchBook(int isbn){
+        int i = 0;
+        while ( i < myBooks.size()-1 ){
+            if ( myBooks.get(i).getIsbn() == isbn ){
+                return myBooks.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
 }
