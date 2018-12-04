@@ -81,10 +81,18 @@ public class Modele {
         return false;
     }
     
+    public int countBorrowsByCustomer(int id){
+        int count=0;
+        for(Borrow b : myBorrows){
+            if(b.getNumCustomer()==id)count++;
+        }
+        return count;
+    }
+    
     public void addBorrow(int isbn, int idCustomer){
         Book tmp = searchBook(isbn);
         Customer cTmp = searchCustomer(idCustomer);
-        if(cTmp != null && tmp != null && reduceBook(isbn)){
+        if(cTmp != null && tmp != null && countBorrowsByCustomer(idCustomer)<4 && reduceBook(isbn)){
             Borrow b = new Borrow(isbn, idCustomer);
             myBorrows.add(b);
         }
