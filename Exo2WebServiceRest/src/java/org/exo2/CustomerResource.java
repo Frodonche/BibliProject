@@ -126,7 +126,7 @@ public class CustomerResource {
             @FormParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
-        if(c!=null && c.login()) {
+        if(c!=null && c.getLogged() && (instance.countBorrowsByCustomer(numero)< 4)) {
             instance.addBorrow(isbn, numero);
         }
     }    
