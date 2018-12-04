@@ -84,6 +84,14 @@ public class Modele {
         return toReturn;
     }
     
+    public String getBooksXML(ArrayList<Book> myList){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        for(Book b : myList)
+            toReturn += b.toXML();
+        
+        return toReturn;
+    }
+    
     public String getBooksJSON(){
         int cpt = 0;
         String toReturn = "{";
