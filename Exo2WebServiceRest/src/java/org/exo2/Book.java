@@ -57,4 +57,17 @@ public class Book {
         
         return toReturn;
     }
+    
+    public String toJSON(){
+        String toReturn = "{";
+        toReturn += "\"isbn\":"+"\""+isbn+"\",";
+        toReturn += "\"titre\":"+"\""+titre+"\",";
+        toReturn += "\"auteur\":"+"\""+auteur+"\",";
+        toReturn += "\"categorie\":"+"\""+categorie+"\",";
+        toReturn += "\"quantite\":"+"\""+quantite+"\"";
+        
+        toReturn += "}";
+        
+        return toReturn;
+    }
 }
