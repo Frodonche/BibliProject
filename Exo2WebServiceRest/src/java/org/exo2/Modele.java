@@ -27,12 +27,13 @@ public class Modele {
         return INSTANCE;
     }
     
-    public void addBook(Book book){
-        Book tmp = searchBook(book.getIsbn());
+    public void addBook(String auteur, String categorie, int isbn, int quantite, String titre){
+        Book tmp = searchBook(isbn);
         if(tmp == null){
-            this.myBooks.add(book);
+            tmp = new Book(isbn,titre,auteur,categorie,quantite);
+            myBooks.add(tmp);
         }else{
-            tmp.setQuantite(tmp.getQuantite()+book.getQuantite());
+            tmp.setQuantite(quantite+tmp.getQuantite());
         }
     }
     
@@ -42,14 +43,14 @@ public class Modele {
         }
     }
     
-    public void updateBook(Book book){
-        Book tmp = searchBook(book.getIsbn());
+    public void updateBook(String auteur, String categorie, int isbn, int quantite, String titre){
+        Book tmp = searchBook(isbn);
         if(tmp != null){
-            tmp.setAuteur(book.getAuteur());
-            tmp.setCategorie(book.getCategorie());
-            tmp.setIsbn(book.getIsbn());
-            tmp.setTitre(book.getTitre());
-            tmp.setQuantite(book.getQuantite());
+            tmp.setAuteur(auteur);
+            tmp.setCategorie(categorie);
+            tmp.setIsbn(isbn);
+            tmp.setTitre(titre);
+            tmp.setQuantite(quantite);
         }
     }
       
@@ -98,6 +99,24 @@ public class Modele {
             i++;
         }
         return null;
+    }
+    
+    
+    public void deleteCustomer(int numero){
+        Customer c = searchCustomer(numero);
+        if(c != null){            
+            myCustomers.remove(c);
+        }
+    }
+    
+    public void updateCustomer(Customer c){
+        Customer tmp = searchCustomer(c.getNumero());
+        if(tmp != null){
+            tmp.setNumero(c.getNumero());
+            tmp.setNom(c.getNom());
+            tmp.setPrenom(c.getPrenom());
+            tmp.setAdresse(c.getAdresse());
+        }
     }
 
 }
