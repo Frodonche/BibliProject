@@ -78,5 +78,13 @@ public class CustomerResource {
             return c.toJSON();
         }        
     }
+    
+    @PUT
+    @Path("deleteCustomer")
+    public void deleteCustomer(@QueryParam("numero") int numero) {
+        Modele instance = Modele.getInstance();
+        instance.deleteCustomer(numero);
+    }
+
 
 }

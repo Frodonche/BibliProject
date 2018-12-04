@@ -97,5 +97,13 @@ public class Modele {
         }
         return null;
     }
+    
+    
+    public void deleteCustomer(int numero){
+        Customer c = searchCustomer(numero);
+        if(c != null){            
+            myCustomers.remove(c);
+        }
+    }
 
 }
