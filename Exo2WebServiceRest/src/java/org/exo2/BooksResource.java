@@ -34,6 +34,7 @@ public class BooksResource {
     
     
     @GET
+    @Path("isAvailableXML")
     @Produces(MediaType.APPLICATION_XML)
     public String isAvailableXML(@QueryParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
@@ -47,7 +48,8 @@ public class BooksResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Path("isAvailableJSON")
+    @Produces(MediaType.APPLICATION_JSON)
     public String isAvailableJSON(@QueryParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
         Book b = instance.searchBook(isbn);
@@ -58,4 +60,22 @@ public class BooksResource {
             return toReturn+"{'available' : false}";
         }
     }
+    
+    
+    @GET
+    @Path("listXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String listXML() {
+        Modele instance = Modele.getInstance();
+        return instance.getBooksXML();
+    }    
+    
+    @GET
+    @Path("listJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listJSON() {
+        Modele instance = Modele.getInstance();
+        return instance.getBooksJSON();
+    }    
+    
 }
