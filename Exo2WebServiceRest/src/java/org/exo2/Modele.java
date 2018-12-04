@@ -52,7 +52,7 @@ public class Modele {
             tmp.setQuantite(book.getQuantite());
         }
     }
-    
+      
     public void addBorrow(Borrow borrow){
         this.myBorrows.add(borrow);
     }
