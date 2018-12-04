@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
@@ -83,7 +85,7 @@ public class BooksResource {
     @GET
     @Path("searchByTitleXML")
     @Produces(MediaType.APPLICATION_XML)
-    public String searchByTitleXML(@QueryParam("title") String title) {
+    public String searchByTitleXML(@QueryParam("titre") String title) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookTitre(title);
         return instance.getBooksXML(list);
@@ -92,7 +94,7 @@ public class BooksResource {
     @GET
     @Path("searchByTitleJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public String searchByTitleJSON(@QueryParam("title") String title) {
+    public String searchByTitleJSON(@QueryParam("titre") String title) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookTitre(title);
         return instance.getBooksJSON(list);
@@ -103,7 +105,7 @@ public class BooksResource {
     @GET
     @Path("searchByAuthorXML")
     @Produces(MediaType.APPLICATION_XML)
-    public String searchByAuthorXML(@QueryParam("author") String author) {
+    public String searchByAuthorXML(@QueryParam("auteur") String author) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookAuteur(author);
         return instance.getBooksXML(list);
@@ -112,7 +114,7 @@ public class BooksResource {
     @GET
     @Path("searchByAuthorJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public String searchByAuthorJSON(@QueryParam("author") String author) {
+    public String searchByAuthorJSON(@QueryParam("auteur") String author) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookAuteur(author);
         return instance.getBooksJSON(list);
@@ -121,7 +123,7 @@ public class BooksResource {
     @GET
     @Path("searchByCategoryXML")
     @Produces(MediaType.APPLICATION_XML)
-    public String searchByCategoryXML(@QueryParam("category") String categorie) {
+    public String searchByCategoryXML(@QueryParam("categorie") String categorie) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookCategorie(categorie);
         return instance.getBooksXML(list);
@@ -130,7 +132,7 @@ public class BooksResource {
     @GET
     @Path("searchByCategoryJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public String searchByCategoryJSON(@QueryParam("category") String categorie) {
+    public String searchByCategoryJSON(@QueryParam("categorie") String categorie) {
         Modele instance = Modele.getInstance();
         ArrayList<Book> list = instance.searchBookCategorie(categorie);
         return instance.getBooksJSON(list);
@@ -163,5 +165,29 @@ public class BooksResource {
            return b.toJSON();
        }
     }   
+    
+    @POST
+    @Path("add")
+    public void inscription(@FormParam("titre") String titre,
+               @FormParam("auteur") String author,
+               @FormParam("categorie") String category,
+               @FormParam("isbn") int isbn,
+               @FormParam("quantite") int quantity) {
+        Modele instance = Modele.getInstance();        
+        if(instance.searchBook(isbn) == null) {
+            instance.addBook(author, category, isbn, quantity, titre);
+        };
+    }
+
+    @PUT
+    @Path("updateBook")
+    public void updateBook(@FormParam("titre") String titre,
+               @FormParam("auteur") String author,
+               @FormParam("categorie") String category,
+               @FormParam("isbn") int isbn,
+               @FormParam("quantite") int quantity) {
+        Modele instance = Modele.getInstance();
+        instance.updateBook(author, category, isbn, quantity, titre);
+    }
 
 }
