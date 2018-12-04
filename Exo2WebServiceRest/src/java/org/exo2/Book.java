@@ -38,4 +38,5 @@ public class Book {
     
     public int getQuantite(){ return this.quantite; }
     public void setQuantite(int quantite){ this.quantite = quantite; }
+    
 }
