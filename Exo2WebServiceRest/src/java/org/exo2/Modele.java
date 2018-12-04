@@ -107,6 +107,29 @@ public class Modele {
         return toReturn;
     }
     
+    public String getBooksJSON(ArrayList<Book> myList){
+        int cpt = 0;
+        String toReturn = "{";
+     
+        if(myList.size() > 0){
+            toReturn += "\"books\":[";
+            
+            for(Book b : myList){
+                if(cpt > 0)
+                    toReturn += ",";
+                else
+                    cpt++;
+                
+                toReturn += b.toJSON();
+            }
+            toReturn += "]";
+        }
+        
+        toReturn += "}";
+        
+        return toReturn;
+    }
+    
  
     public String toJSON(){
         int cpt = 0;
