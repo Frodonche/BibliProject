@@ -13,13 +13,15 @@ public class Customer {
     private int numero;
     private String nom;
     private String prenom;
-    private String adresse;    
+    private String adresse;
+    private boolean logged;
     
     public Customer(int numero, String nom, String prenom, String adresse){
         this.numero = numero;
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;
+        this.logged = false;
     }
     
     public int getNumero(){ return this.numero; }
@@ -62,5 +64,17 @@ public class Customer {
         toReturn += "}";
         
         return toReturn;
+    }
+    
+    public void login(){
+        this.logged = true;
+    }
+    
+    public void logout(){
+        this.logged = false;
+    }
+    
+    public boolean getLogged() {
+        return this.logged;
     }
 }
