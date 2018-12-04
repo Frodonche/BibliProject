@@ -105,5 +105,15 @@ public class Modele {
             myCustomers.remove(c);
         }
     }
+    
+    public void updateCustomer(Customer c){
+        Customer tmp = searchCustomer(c.getNumero());
+        if(tmp != null){
+            tmp.setNumero(c.getNumero());
+            tmp.setNom(c.getNom());
+            tmp.setPrenom(c.getPrenom());
+            tmp.setAdresse(c.getAdresse());
+        }
+    }
 
 }

@@ -85,6 +85,17 @@ public class CustomerResource {
         Modele instance = Modele.getInstance();
         instance.deleteCustomer(numero);
     }
+    
+    @PUT
+    @Path("updateCustomer")
+    public void updateCustomer(@QueryParam("numero") int numero,
+               @QueryParam("nom") String nom,
+               @QueryParam("prenom") String prenom,
+               @QueryParam("adresse") String adresse) {
+        Modele instance = Modele.getInstance();
+        instance.updateCustomer(new Customer(numero, nom, prenom, adresse));
+    }
+
 
 
 }
