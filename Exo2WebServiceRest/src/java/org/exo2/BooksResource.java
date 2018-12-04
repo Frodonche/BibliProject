@@ -135,4 +135,33 @@ public class BooksResource {
         ArrayList<Book> list = instance.searchBookCategorie(categorie);
         return instance.getBooksJSON(list);
     }   
+    
+    @GET
+    @Path("searchByIsbnXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String searchByIsbnXML(@QueryParam("isbn") int isbn) {
+        Modele instance = Modele.getInstance();
+        Book b = instance.searchBook(isbn);
+        if(b == null) {
+            String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> ERROR: Not found";
+            return toReturn;
+        } else {
+            return b.toXMLWithHeader();
+        }
+    }   
+    
+    @GET
+    @Path("searchByIsbnJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchByIsbnJSON(@QueryParam("isbn") int isbn) {
+       Modele instance = Modele.getInstance();
+       Book b = instance.searchBook(isbn);
+       if(b == null) {
+           String toReturn = "{}";
+           return toReturn;
+       } else {
+           return b.toJSON();
+       }
+    }   
+
 }
