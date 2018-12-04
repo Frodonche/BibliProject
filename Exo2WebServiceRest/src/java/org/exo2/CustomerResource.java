@@ -118,6 +118,19 @@ public class CustomerResource {
         instance.updateCustomer(new Customer(numero, nom, prenom, adresse));
     }
 
+        
+    @POST
+    @Path("borrow")
+    public void borrow(@FormParam("numero") int numero,
+            @FormParam("nom") String nom,
+            @FormParam("isbn") int isbn) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c!=null && c.login()) {
+            instance.addBorrow(isbn, numero);
+        }
+    }    
+
 
 
 }
