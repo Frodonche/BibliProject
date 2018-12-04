@@ -55,8 +55,48 @@ public class Modele {
         }
     }
       
-    public void addBorrow(Borrow borrow){
-        this.myBorrows.add(borrow);
+    public void deleteBorrow(int isbn, int idCustomer){
+        Book tmp = searchBook(isbn);
+        Customer cTmp = searchCustomer(idCustomer);
+        if(cTmp != null && tmp != null){
+            int i = 0;
+            boolean continuer = true;
+            while( i < myBorrows.size()-1 && continuer ){
+                if(myBorrows.get(i).getIsbn()==isbn && myBorrows.get(i).getNumCustomer()==idCustomer){
+                    continuer = false;
+                    i--;
+                }
+                i++;
+            }
+            myBorrows.remove(i);
+            upBook(isbn);
+        }
+    }
+    public boolean upBook(int isbn){
+        Book tmp = searchBook(isbn);
+        if(tmp!=null){
+            tmp.setQuantite(tmp.getQuantite()+1);
+            return true;
+        }
+        return false;
+    }
+    
+    public void addBorrow(int isbn, int idCustomer){
+        Book tmp = searchBook(isbn);
+        Customer cTmp = searchCustomer(idCustomer);
+        if(cTmp != null && tmp != null && reduceBook(isbn)){
+            Borrow b = new Borrow(isbn, idCustomer);
+            myBorrows.add(b);
+        }
+    }
+    
+    public boolean reduceBook(int isbn){
+        Book tmp = searchBook(isbn);
+        if(tmp!=null && tmp.getQuantite()>0){
+            tmp.setQuantite(tmp.getQuantite()-1);
+            return true;
+        }
+        return false;
     }
     
     public void addCustomer(Customer customer){
@@ -230,10 +270,36 @@ public class Modele {
             tmp.setAdresse(c.getAdresse());
         }
     }
-    
     public void logoutAll(){
         for(Customer c : myCustomers)
             c.logout();
     }
 
+    public ArrayList<Book> searchBookAuteur(String auteur){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getAuteur().equals(auteur))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
+    public ArrayList<Book> searchBookTitre(String titre){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getTitre().equals(titre))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
+    public ArrayList<Book> searchBookCategorie(String categorie){
+        ArrayList<Book> books = new ArrayList<>();
+        int i = 0;
+        while (i<myBooks.size()-1){
+            if(myBooks.get(i).getCategorie().equals(categorie))books.add(myBooks.get(i));
+            i++;
+        }
+        return books;
+    }
 }
