@@ -60,4 +60,16 @@ public class Modele {
         }
         return null;
     }
+    
+    public Customer searchCustomer(int numero){
+        int i = 0;
+        while ( i < myCustomers.size()-1 ){
+            if ( myCustomers.get(i).getNumero() == numero ){
+                return myCustomers.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
+
 }

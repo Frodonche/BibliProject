@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
  * @author frlallemand
  */
 @Path("inscription")
-public class InscriptionResource {
+public class CustomerResource {
 
     @Context
     private UriInfo context;
@@ -30,7 +30,7 @@ public class InscriptionResource {
     /**
      * Creates a new instance of InscriptionResource
      */
-    public InscriptionResource() {
+    public CustomerResource() {
     }
 
 
@@ -39,9 +39,14 @@ public class InscriptionResource {
      * @param content representation for the resource
      */
     @POST
-    public void putXml(@QueryParam("numero") int numero,
+    @Path("inscription")
+    public void inscription(@QueryParam("numero") int numero,
                @QueryParam("nom") String nom,
                @QueryParam("prenom") String prenom,
                @QueryParam("adresse") String adresse) {
+        Modele instance = Modele.getInstance();
+        if(instance.searchCustomer(numero) == null) {
+            instance.addCustomer(new Customer(numero, nom, prenom, adresse));
+        };
     }
 }
