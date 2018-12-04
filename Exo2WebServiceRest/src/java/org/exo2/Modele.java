@@ -50,11 +50,11 @@ public class Modele {
         return null;
     }
     
-    public Book searchCustomer(int numero){
+    public Customer searchCustomer(int numero){
         int i = 0;
-        while ( i < myBooks.size()-1 ){
-            if ( myBooks.get(i).getIsbn() == isbn ){
-                return myBooks.get(i);
+        while ( i < myCustomers.size()-1 ){
+            if ( myCustomers.get(i).getNumero() == numero ){
+                return myCustomers.get(i);
             }
             i++;
         }
