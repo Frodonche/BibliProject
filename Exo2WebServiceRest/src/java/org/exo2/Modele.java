@@ -33,4 +33,20 @@ public class Modele {
     public void addCustomer(Customer customer){
         this.myCustomers.add(customer);
     }
+    
+    public String toXML(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += "<bibliotheque>";
+        for(Book b : myBooks)
+            toReturn += b.toXML();
+        for(Borrow bo : myBorrows)
+            toReturn += bo.toXML();
+        for(Customer c : myCustomers)
+            toReturn += c.toXML();
+        toReturn += "</bibliotheque>";
+        
+        return toReturn;
+    }
+    
+    
 }

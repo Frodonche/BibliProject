@@ -39,4 +39,22 @@ public class Book {
     public int getQuantite(){ return this.quantite; }
     public void setQuantite(int quantite){ this.quantite = quantite; }
     
+    public String toXML(){
+        String toReturn = "<book>";
+        toReturn += "<isbn>"+isbn+"</isbn>";
+        toReturn += "<titre>"+titre+"</titre>";
+        toReturn += "<auteur>"+auteur+"</auteur>";
+        toReturn += "<categorie>"+categorie+"</categorie>";
+        toReturn += "<quantite>"+quantite+"</quantite>";
+        toReturn += "</book>";
+        
+        return toReturn;
+    }
+    
+    public String toXMLWithHeader(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += toXML();
+        
+        return toReturn;
+    }
 }
