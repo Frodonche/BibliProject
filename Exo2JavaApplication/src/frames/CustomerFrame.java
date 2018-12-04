@@ -20,7 +20,7 @@ public class CustomerFrame extends JFrame{
     public CustomerFrame(Modele modele){
         super("Gestion adherents");
         
-        this.setSize(600, 500);
+        this.setSize(800, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         CustomerTabbedPane customer = new CustomerTabbedPane(modele);
@@ -29,7 +29,7 @@ public class CustomerFrame extends JFrame{
         
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-        this.setLocation((int)(defaultScreen.getDefaultConfiguration().getBounds().getMaxX()/2)-600, (int)(defaultScreen.getDefaultConfiguration().getBounds().getMaxY()/4));
+        this.setLocation((int)(defaultScreen.getDefaultConfiguration().getBounds().getMaxX()/2)-800, (int)(defaultScreen.getDefaultConfiguration().getBounds().getMaxY()/4));
         
         this.setVisible(true);
     }

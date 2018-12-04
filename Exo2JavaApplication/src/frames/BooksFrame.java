@@ -21,7 +21,7 @@ public class BooksFrame extends JFrame{
     public BooksFrame(Modele modele){
         super("Gestion livres");
         
-        this.setSize(600, 500);
+        this.setSize(800, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         BooksTabbedPane books = new BooksTabbedPane(modele);
