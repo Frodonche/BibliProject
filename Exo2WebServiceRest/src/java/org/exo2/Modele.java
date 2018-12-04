@@ -61,6 +61,21 @@ public class Modele {
         this.myCustomers.add(customer);
     }
     
+    public String toXML(){
+        String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+        toReturn += "<bibliotheque>";
+        for(Book b : myBooks)
+            toReturn += b.toXML();
+        for(Borrow bo : myBorrows)
+            toReturn += bo.toXML();
+        for(Customer c : myCustomers)
+            toReturn += c.toXML();
+        toReturn += "</bibliotheque>";
+        
+        return toReturn;
+    }
+    
+    
     public Book searchBook(int isbn){
         int i = 0;
         while ( i < myBooks.size()-1 ){
