@@ -52,28 +52,30 @@ public class CustomerResource {
     }
     
     @GET
-    @Path("searchCustomer")
+    @Path("searchCustomerXML")
     @Produces(MediaType.APPLICATION_XML)
-    public void searchCustomerXML(@QueryParam("numero") int numero) {
+    public String searchCustomerXML(@QueryParam("numero") int numero) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
         if(c == null) {
-            return
+            String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> ERROR: Not found";
+            return toReturn;
         } else {
-            return c.toXML();
+            return c.toXMLWithHeader();
         }        
     }
 
-        @GET
-    @Path("searchCustomer")
+    @GET
+    @Path("searchCustomerJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public void searchCustomerJSON(@QueryParam("numero") int numero) {
+    public String searchCustomerJSON(@QueryParam("numero") int numero) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
         if(c == null) {
-            return
+            String toReturn = "{}";
+            return toReturn;
         } else {
-            return c.toXML();
+            return c.toJSON();
         }        
     }
 
