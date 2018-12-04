@@ -49,4 +49,16 @@ public class Modele {
         }
         return null;
     }
+    
+    public Book searchCustomer(int numero){
+        int i = 0;
+        while ( i < myBooks.size()-1 ){
+            if ( myBooks.get(i).getIsbn() == isbn ){
+                return myBooks.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
+
 }
