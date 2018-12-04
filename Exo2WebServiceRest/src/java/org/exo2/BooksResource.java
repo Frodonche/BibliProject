@@ -31,7 +31,7 @@ public class BooksResource {
      */
     public BooksResource() {
     }
-    
+        
     
     @GET
     @Path("isAvailableXML")

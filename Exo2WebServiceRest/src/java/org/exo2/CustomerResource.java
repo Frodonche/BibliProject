@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,6 +35,27 @@ public class CustomerResource {
     public CustomerResource() {
     }
 
+    @POST
+    @Path("login")
+    public void login(@FormParam("numero") int numero,
+            @FormParam("nom") String nom) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c!=null) {
+            c.login();
+        }
+    } 
+    
+    @POST
+    @Path("logout")
+    public void logout(@FormParam("numero") int numero,
+            @FormParam("nom") String nom) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c!=null) {
+            c.logout();
+        }
+    }    
 
     /**
      * POST method for updating or creating an instance of InscriptionResource
@@ -41,10 +63,10 @@ public class CustomerResource {
      */
     @POST
     @Path("inscription")
-    public void inscription(@QueryParam("numero") int numero,
-               @QueryParam("nom") String nom,
-               @QueryParam("prenom") String prenom,
-               @QueryParam("adresse") String adresse) {
+    public void inscription(@FormParam("numero") int numero,
+               @FormParam("nom") String nom,
+               @FormParam("prenom") String prenom,
+               @FormParam("adresse") String adresse) {
         Modele instance = Modele.getInstance();
         if(instance.searchCustomer(numero) == null) {
             instance.addCustomer(new Customer(numero, nom, prenom, adresse));
@@ -81,14 +103,14 @@ public class CustomerResource {
     
     @PUT
     @Path("deleteCustomer")
-    public void deleteCustomer(@QueryParam("numero") int numero) {
+    public void deleteCustomer(@FormParam("numero") int numero) {
         Modele instance = Modele.getInstance();
         instance.deleteCustomer(numero);
     }
     
     @PUT
     @Path("updateCustomer")
-    public void updateCustomer(@QueryParam("numero") int numero,
+    public void updateCustomer(@FormParam("numero") int numero,
                @QueryParam("nom") String nom,
                @QueryParam("prenom") String prenom,
                @QueryParam("adresse") String adresse) {

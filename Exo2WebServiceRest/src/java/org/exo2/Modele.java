@@ -21,6 +21,7 @@ public class Modele {
         this.myBooks = new ArrayList<Book>();
         this.myBorrows = new ArrayList<Borrow>();
         this.myCustomers = new ArrayList<Customer>();
+        this.logoutAll();
     }
     
     public static Modele getInstance(){
@@ -228,6 +229,11 @@ public class Modele {
             tmp.setPrenom(c.getPrenom());
             tmp.setAdresse(c.getAdresse());
         }
+    }
+    
+    public void logoutAll(){
+        for(Customer c : myCustomers)
+            c.logout();
     }
 
 }
