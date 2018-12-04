@@ -5,6 +5,7 @@
  */
 package org.exo2;
 
+import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author frlallemand
  */
-@Path("inscription")
+@Path("customer")
 public class CustomerResource {
 
     @Context
@@ -49,4 +50,31 @@ public class CustomerResource {
             instance.addCustomer(new Customer(numero, nom, prenom, adresse));
         };
     }
+    
+    @GET
+    @Path("searchCustomer")
+    @Produces(MediaType.APPLICATION_XML)
+    public void searchCustomerXML(@QueryParam("numero") int numero) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c == null) {
+            return
+        } else {
+            return c.toXML();
+        }        
+    }
+
+        @GET
+    @Path("searchCustomer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void searchCustomerJSON(@QueryParam("numero") int numero) {
+        Modele instance = Modele.getInstance();
+        Customer c = instance.searchCustomer(numero);
+        if(c == null) {
+            return
+        } else {
+            return c.toXML();
+        }        
+    }
+
 }
