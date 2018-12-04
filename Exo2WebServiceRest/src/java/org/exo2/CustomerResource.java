@@ -74,13 +74,13 @@ public class CustomerResource {
     }
     
     @GET
-    @Path("searchCustomerXML")
     @Produces(MediaType.APPLICATION_XML)
+    @Path("searchCustomerXML")
     public String searchCustomerXML(@QueryParam("numero") int numero) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
         if(c == null) {
-            String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?> ERROR: Not found";
+            String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
             return toReturn;
         } else {
             return c.toXMLWithHeader();
