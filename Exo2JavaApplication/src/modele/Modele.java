@@ -5,7 +5,7 @@
  */
 package modele;
 
-import graphic.views.View;
+import views.View;
 import java.util.ArrayList;
 
 /**
