@@ -54,8 +54,48 @@ public class Modele {
         }
     }
       
-    public void addBorrow(Borrow borrow){
-        this.myBorrows.add(borrow);
+    public void deleteBorrow(int isbn, int idCustomer){
+        Book tmp = searchBook(isbn);
+        Customer cTmp = searchCustomer(idCustomer);
+        if(cTmp != null && tmp != null){
+            int i = 0;
+            boolean continuer = true;
+            while( i < myBorrows.size()-1 && continuer ){
+                if(myBorrows.get(i).getIsbn()==isbn && myBorrows.get(i).getNumCustomer()==idCustomer){
+                    continuer = false;
+                    i--;
+                }
+                i++;
+            }
+            myBorrows.remove(i);
+            upBook(isbn);
+        }
+    }
+    public boolean upBook(int isbn){
+        Book tmp = searchBook(isbn);
+        if(tmp!=null){
+            tmp.setQuantite(tmp.getQuantite()+1);
+            return true;
+        }
+        return false;
+    }
+    
+    public void addBorrow(int isbn, int idCustomer){
+        Book tmp = searchBook(isbn);
+        Customer cTmp = searchCustomer(idCustomer);
+        if(cTmp != null && tmp != null && reduceBook(isbn)){
+            Borrow b = new Borrow(isbn, idCustomer);
+            myBorrows.add(b);
+        }
+    }
+    
+    public boolean reduceBook(int isbn){
+        Book tmp = searchBook(isbn);
+        if(tmp!=null && tmp.getQuantite()>0){
+            tmp.setQuantite(tmp.getQuantite()-1);
+            return true;
+        }
+        return false;
     }
     
     public void addCustomer(Customer customer){
