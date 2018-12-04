@@ -39,4 +39,13 @@ public class Borrow {
         
         return toReturn;
     }
+    
+    public String toJSON(){
+        String toReturn = "{";
+        toReturn += "\"isbn\":"+isbn+",";
+        toReturn += "\"numCustomer\":"+numCustomer;
+        toReturn += "}";
+        
+        return toReturn;
+    }
 }
