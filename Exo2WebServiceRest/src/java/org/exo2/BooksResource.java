@@ -5,6 +5,7 @@
  */
 package org.exo2;
 
+import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -78,4 +79,60 @@ public class BooksResource {
         return instance.getBooksJSON();
     }    
     
+    
+    @GET
+    @Path("searchByTitleXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String searchByTitleXML(@QueryParam("title") String title) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookTitre(title);
+        return instance.getBooksXML(list);
+    }   
+    
+    @GET
+    @Path("searchByTitleJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchByTitleJSON(@QueryParam("title") String title) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookTitre(title);
+        return instance.getBooksJSON(list);
+    }   
+
+    
+    
+    @GET
+    @Path("searchByAuthorXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String searchByAuthorXML(@QueryParam("author") String author) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookAuteur(author);
+        return instance.getBooksXML(list);
+    }   
+    
+    @GET
+    @Path("searchByAuthorJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchByAuthorJSON(@QueryParam("author") String author) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookAuteur(author);
+        return instance.getBooksJSON(list);
+    }   
+
+    @GET
+    @Path("searchByCategoryXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String searchByCategoryXML(@QueryParam("category") String categorie) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookCategorie(categorie);
+        return instance.getBooksXML(list);
+    }   
+    
+    @GET
+    @Path("searchByCategoryJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchByCategoryJSON(@QueryParam("category") String categorie) {
+        Modele instance = Modele.getInstance();
+        ArrayList<Book> list = instance.searchBookCategorie(categorie);
+        return instance.getBooksJSON(list);
+    }   
 }
