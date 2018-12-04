@@ -28,7 +28,18 @@ public class Modele {
     }
     
     public void addBook(Book book){
-        this.myBooks.add(book);
+        Book tmp = searchBook(book.getIsbn());
+        if(tmp == null){
+            this.myBooks.add(book);
+        }else{
+            tmp.setQuantite(tmp.getQuantite()+book.getQuantite());
+        }
+    }
+    
+    public void deleteBook(Book book){
+        if(searchBook(book.getIsbn()) != null){
+            myBooks.remove(book);
+        }
     }
     
     public void addBorrow(Borrow borrow){
