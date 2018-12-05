@@ -167,8 +167,7 @@ public class BooksResource {
     }   
     
     @POST
-    @Path("add")
-    public void inscription(@FormParam("titre") String titre,
+    public void addBook(@FormParam("titre") String titre,
                @FormParam("auteur") String author,
                @FormParam("categorie") String category,
                @FormParam("isbn") int isbn,
@@ -180,7 +179,6 @@ public class BooksResource {
     }
 
     @PUT
-    @Path("updateBook")
     public void updateBook(@FormParam("titre") String titre,
                @FormParam("auteur") String author,
                @FormParam("categorie") String category,

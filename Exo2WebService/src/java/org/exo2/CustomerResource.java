@@ -5,7 +5,6 @@
  */
 package org.exo2;
 
-import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -30,11 +29,11 @@ public class CustomerResource {
     private UriInfo context;
 
     /**
-     * Creates a new instance of InscriptionResource
+     * Creates a new instance of CustomerResource
      */
     public CustomerResource() {
     }
-
+    
     @POST
     @Path("login")
     public void login(@FormParam("numero") int numero,
@@ -45,7 +44,8 @@ public class CustomerResource {
             c.login();
         }
     } 
-    
+
+      
     @POST
     @Path("logout")
     public void logout(@FormParam("numero") int numero,
@@ -55,24 +55,25 @@ public class CustomerResource {
         if(c!=null) {
             c.logout();
         }
-    }    
-
-    /**
-     * POST method for updating or creating an instance of InscriptionResource
-     * @param content representation for the resource
-     */
+    }   
+    
     @POST
-    @Path("inscription")
-    public void inscription(@FormParam("numero") int numero,
+    public String inscription(@FormParam("numero") int numero,
                @FormParam("nom") String nom,
                @FormParam("prenom") String prenom,
                @FormParam("adresse") String adresse) {
+        
         Modele instance = Modele.getInstance();
         if(instance.searchCustomer(numero) == null) {
-            instance.addCustomer(new Customer(numero, nom, prenom, adresse));
+            Customer c = new Customer(numero, nom, prenom, adresse);
+            instance.addCustomer(c);
         };
+        
+        Customer cu = instance.searchCustomer(numero);
+        return cu.getNom();
     }
     
+       
     @GET
     @Produces(MediaType.APPLICATION_XML)
     @Path("searchCustomerXML")
@@ -94,11 +95,20 @@ public class CustomerResource {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
         if(c == null) {
-            String toReturn = "{}";
+            String toReturn = "{"+numero+"}";
             return toReturn;
         } else {
             return c.toJSON();
         }        
+    }
+     
+    @PUT
+    public void updateCustomer(@FormParam("numero") int numero,
+               @QueryParam("nom") String nom,
+               @QueryParam("prenom") String prenom,
+               @QueryParam("adresse") String adresse) {
+        Modele instance = Modele.getInstance();
+        instance.updateCustomer(new Customer(numero, nom, prenom, adresse));
     }
     
     @PUT
@@ -108,17 +118,6 @@ public class CustomerResource {
         instance.deleteCustomer(numero);
     }
     
-    @PUT
-    @Path("updateCustomer")
-    public void updateCustomer(@FormParam("numero") int numero,
-               @QueryParam("nom") String nom,
-               @QueryParam("prenom") String prenom,
-               @QueryParam("adresse") String adresse) {
-        Modele instance = Modele.getInstance();
-        instance.updateCustomer(new Customer(numero, nom, prenom, adresse));
-    }
-
-        
     @POST
     @Path("borrow")
     public void borrow(@FormParam("numero") int numero,
@@ -129,8 +128,5 @@ public class CustomerResource {
         if(c!=null && c.getLogged() && (instance.countBorrowsByCustomer(numero)< 4)) {
             instance.addBorrow(isbn, numero);
         }
-    }    
-
-
-
+    }  
 }
