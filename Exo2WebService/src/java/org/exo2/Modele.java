@@ -5,7 +5,14 @@
  */
 package org.exo2;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,42 +23,166 @@ public class Modele {
     private ArrayList<Book> myBooks;
     private ArrayList<Borrow> myBorrows;
     private ArrayList<Customer> myCustomers;
+    private String URL = "jdbc:derby://localhost:1527/bibli";
+    private String login = "";
+    private String mdp = "";
+    private Connection con ;
+    private Statement stmt ;
     
     public Modele(){
         this.myBooks = new ArrayList<Book>();
         this.myBorrows = new ArrayList<Borrow>();
         this.myCustomers = new ArrayList<Customer>();
         this.logoutAll();
+        try {
+            con = DriverManager.getConnection(URL, login,mdp);
+            stmt = con.createStatement( );
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static Modele getInstance(){
         return INSTANCE;
     }
     
+    public void updateBookList(){
+        String SQL = "select * from books;";
+        myBooks = new ArrayList<>();
+        Book tmp;
+        String auteur,titre,categorie;
+        int quantite,isbn;
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    isbn = rs.getInt("isbn");
+                    quantite = rs.getInt("quantite");
+                    titre = rs.getString("titre");
+                    auteur = rs.getString("auteur");
+                    categorie = rs.getString("categorie");
+                    tmp = new Book(isbn, titre, auteur, categorie, quantite);
+                    myBooks.add(tmp);
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void updateBorrowList(){
+        String SQL = "select * from borrows;";
+        myBorrows = new ArrayList<>();
+        Borrow tmp;
+        int id,isbn;
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    isbn = rs.getInt("isbn");
+                    id = rs.getInt("idCustomer");
+                    tmp = new Borrow(isbn, id);
+                    myBorrows.add(tmp);
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public void updateCustomerList(){
+        String SQL = "select * from customers;";
+        myCustomers = new ArrayList<>();
+        Customer tmp;
+        int numero;
+        String nom, prenom, adresse;
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    numero = rs.getInt("numero");
+                    nom = rs.getString("nom");
+                    prenom = rs.getString("prenom");
+                    adresse = rs.getString("adresse");
+                    tmp = new Customer(numero, nom, prenom, adresse);
+                    myCustomers.add(tmp);
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    public void executeRequest (String SQL){
+        try { 
+            stmt.executeQuery(SQL);
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addBookSQL(String auteur, String categorie, int isbn, int quantite, String titre){
+        String SQL = "insert into books values ("+ Integer.toString(isbn) + "," + titre + "," + auteur + "," + categorie + "," + Integer.toString(quantite) + ");";
+        executeRequest(SQL);
+    }
+    
+    public int searchBookQuantite(int isbn){
+        String SQL = "select * from books where isbn='"+Integer.toString(isbn)+"';";
+        int qte=0;
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    qte = rs.getInt("quantite");
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return qte;
+    }
+    
+    public void updateBookQuantite(int isbn, int qte){
+        int qte_exist = searchBookQuantite(isbn);
+        qte = qte + qte_exist;
+        String SQL = "update books set quantite = '" + qte + "' where isbn = '"+isbn+"';";
+        executeRequest(SQL);
+    }
+    
+    public boolean existBook(int isbn){
+        String SQL = "select * from books where isbn='"+Integer.toString(isbn)+"';";
+        int qte=0;
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    qte++;
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(qte>0)return true;
+        return false;
+    }
+
     public void addBook(String auteur, String categorie, int isbn, int quantite, String titre){
-        Book tmp = searchBook(isbn);
-        if(tmp == null){
-            tmp = new Book(isbn,titre,auteur,categorie,quantite);
-            myBooks.add(tmp);
+        
+        if(!existBook(isbn)){
+            addBookSQL(auteur, categorie, isbn, quantite, titre);
         }else{
-            tmp.setQuantite(quantite+tmp.getQuantite());
+            updateBookQuantite(isbn,quantite+searchBookQuantite(isbn));
         }
     }
     
     public void deleteBook(int isbn){
-        if(searchBook(isbn) != null){
-            myBooks.remove(searchBook(isbn));
+        if(existBook(isbn)){
+            String SQL = "DELETE FROM books WHERE isbn = '"+isbn+"';";
+            executeRequest(SQL);
         }
     }
     
     public void updateBook(String auteur, String categorie, int isbn, int quantite, String titre){
         Book tmp = searchBook(isbn);
-        if(tmp != null){
-            tmp.setAuteur(auteur);
-            tmp.setCategorie(categorie);
-            tmp.setIsbn(isbn);
-            tmp.setTitre(titre);
-            tmp.setQuantite(quantite);
+        if(existBook(isbn)){
+            String SQL = "update books "
+                    + "set quantite = '" + quantite +"' , "
+                    + "categorie = '"+categorie+"' ,"
+                    + "titre = '" + titre +"' ,"
+                    + "auteur = '" + auteur +"' ,"
+                    + "' where isbn = '"+isbn+"';";
+            executeRequest(SQL);
         }
     }
       
