@@ -23,7 +23,7 @@ public class Exo2JavaApplication {
     public static void main(String[] args) {
         Modele modele = new Modele();
         CustomerFrame customer = new CustomerFrame(modele);
-        BooksFrame books = new BooksFrame(modele);
+        //BooksFrame books = new BooksFrame(modele);
         
     }
     

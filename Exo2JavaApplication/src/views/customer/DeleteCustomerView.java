@@ -5,12 +5,22 @@
  */
 package views.customer;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 import modele.Modele;
 import views.View;
 
@@ -55,6 +65,27 @@ public class DeleteCustomerView extends JPanel implements View{
         c.gridy = 1;
         this.add(validateButton, c);
     
+        
+            validateButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ClientConfig config = new DefaultClientConfig();
+                Client client = Client.create(config);
+                WebResource service = client.resource(
+                    UriBuilder.fromUri("http://localhost:8080/Exo2WebService/webresources").build()
+                );
+                
+                MultivaluedMap params = new MultivaluedMapImpl();
+                params.add("numero",numCustomerT.getText());
+
+                service.path("customer/deleteCustomer")
+                        .queryParams(params)
+                        .type(MediaType.APPLICATION_FORM_URLENCODED)
+                        .post();
+                
+            }
+        
+        });
     }  
     
     @Override
