@@ -70,7 +70,7 @@ public class CustomerResource {
         };
         
         Customer cu = instance.searchCustomer(numero);
-        return cu.getNom();
+        return cu.getPrenom();
     }
     
        
@@ -111,7 +111,7 @@ public class CustomerResource {
         instance.updateCustomer(new Customer(numero, nom, prenom, adresse));
     }
     
-    @PUT
+    @POST
     @Path("deleteCustomer")
     public void deleteCustomer(@FormParam("numero") int numero) {
         Modele instance = Modele.getInstance();
