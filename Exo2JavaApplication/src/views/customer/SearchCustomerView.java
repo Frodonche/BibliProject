@@ -5,14 +5,24 @@
  */
 package views.customer;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 import modele.Modele;
 import views.View;
 
@@ -42,16 +52,8 @@ public class SearchCustomerView extends JPanel implements View{
         JLabel numCustomerL = new JLabel("N° Adherent ");
         JTextField numCustomerT = new JTextField();
         
-        JLabel lastNameCustomerL = new JLabel("Nom ");
-        JTextField lastNameCustomerT = new JTextField();
-        
-        JLabel surNameCustomerL = new JLabel("Prenom ");
-        JTextField surNameCustomerT = new JTextField();
-        
-        JLabel addressCustomerL = new JLabel("Adresse ");
-        JTextField addressCustomerT = new JTextField();
-        
-        JButton validateButton = new JButton("Rechercher");
+        JButton validateButtonXML = new JButton("RechercherXML");
+        JButton validateButtonJSON = new JButton("RechercherJSON");
         
         JTextArea results = new JTextArea(12, 50);
         results.setEditable(false);
@@ -72,34 +74,17 @@ public class SearchCustomerView extends JPanel implements View{
         c.gridx = 0;
         c.gridy = 2;
         panelHaut.add(numCustomerT, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
-        panelHaut.add(lastNameCustomerL, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 2;
-        panelHaut.add(lastNameCustomerT, c);
-        
+
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
-        c.gridy = 1;
-        panelHaut.add(surNameCustomerL, c);
-        
+        c.gridy = 5;
+        panelHaut.add(validateButtonJSON, c);
+
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
-        c.gridy = 2;
-        panelHaut.add(surNameCustomerT, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 3;
-        panelHaut.add(validateButton, c);
-        
-        
-        
+        c.gridy = 6;
+        panelBas.add(validateButtonXML, c);
+
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
         c.gridy = 4;
@@ -108,6 +93,55 @@ public class SearchCustomerView extends JPanel implements View{
         this.add(panelHaut);
         this.add(panelBas);
         
+        validateButtonXML.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ClientConfig config = new DefaultClientConfig();
+                Client client = Client.create(config);
+                WebResource service = client.resource(
+                    UriBuilder.fromUri("http://localhost:8080/Exo2WebService/webresources").build()
+                );
+                
+                MultivaluedMap params = new MultivaluedMapImpl();
+                params.add("numero",numCustomerT.getText());
+
+                String XML = service.path("customer/XML/searchCustomer")
+                        .queryParams(params)
+                        .type(MediaType.APPLICATION_FORM_URLENCODED)
+                        .get(String.class);
+                
+                System.out.println(XML);
+                results.setText(XML);
+                results.setVisible(true);
+                
+            }
+        
+        });
+
+        validateButtonJSON.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ClientConfig config = new DefaultClientConfig();
+                Client client = Client.create(config);
+                WebResource service = client.resource(
+                    UriBuilder.fromUri("http://localhost:8080/Exo2WebService/webresources").build()
+                );
+                
+                MultivaluedMap params = new MultivaluedMapImpl();
+                params.add("numero",numCustomerT.getText());
+
+                String JSON = service.path("customer/JSON/searchCustomer")
+                        .queryParams(params)
+                        .type(MediaType.APPLICATION_FORM_URLENCODED)
+                        .get(String.class);
+                
+                System.out.println(JSON);
+                results.setText(JSON);
+                results.setVisible(true);
+            }
+        
+        });
+
         this.setVisible(true);
     
     }  
