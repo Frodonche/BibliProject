@@ -24,15 +24,98 @@ and open the template in the editor.
 
         <table align="center">
             <tr>
-                <td><form action="">
-                        ISBN <input type="text" name="isbn">
-                        Titre <input type="text" name="titre">
-                        Auteur <input type="text" name="auteur">
-                        Categorie <input type="text" name="categorie">
+            XML
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/list"> 
+                        Recherche
                         <input type="submit" value="Rechercher">
                     </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/searchByIsbn"> 
+                        Recherche par ISBN <input type="text" name="isbn">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/searchByCategory"> 
+                        Recherche par Categorie <input type="text" name="categorie">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/searchByAuthor"> 
+                        Recherche par Auteur <input type="text" name="auteur">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/searchByTitle"> 
+                        Recherche par Titre <input type="text" name="titre">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>               
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/XML/isAvailable"> 
+                        Disponibilité : <input type="text" name="isbn">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+
+                
+            </tr>
+            <tr>
+            JSON
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/list"> 
+                        Recherche
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/searchByIsbn"> 
+                        Recherche par ISBN <input type="text" name="isbn">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/searchByCategory"> 
+                        Recherche par Categorie <input type="text" name="categorie">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/searchByAuthor"> 
+                        Recherche par Auteur <input type="text" name="auteur">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/searchByTitle"> 
+                        Recherche par Titre <input type="text" name="titre">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
+                </td>
+                <td>
+                    <form method="get" action="http://localhost:8080/Exo2WebService/webresources/books/JSON/isAvailable"> 
+                        Disponibilité : <input type="text" name="isbn">
+                        <input type="submit" value="Rechercher">
+                    </form> 
+                    <br/>
                 </td>
             </tr>
+
         </table>
        
     </body>
