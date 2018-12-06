@@ -119,6 +119,7 @@ public class Modele {
     public void addBookSQL(String auteur, String categorie, int isbn, int quantite, String titre){
         String SQL = "insert into books values ("+ Integer.toString(isbn) + "," + titre + "," + auteur + "," + categorie + "," + Integer.toString(quantite) + ");";
         executeRequest(SQL);
+        this.updateBookList();
     }
     
     public int searchBookQuantite(int isbn){
@@ -140,6 +141,7 @@ public class Modele {
         qte = qte + qte_exist;
         String SQL = "update books set quantite = '" + qte + "' where isbn = '"+isbn+"';";
         executeRequest(SQL);
+        this.updateBookList();
     }
     
     public boolean existBook(int isbn){
@@ -164,12 +166,14 @@ public class Modele {
         }else{
             updateBookQuantite(isbn,quantite+searchBookQuantite(isbn));
         }
+        this.updateBookList();
     }
     
     public void deleteBook(int isbn){
         if(existBook(isbn)){
             String SQL = "DELETE FROM books WHERE isbn = '"+isbn+"';";
             executeRequest(SQL);
+            this.updateBookList();
         }
     }
     
@@ -183,34 +187,46 @@ public class Modele {
                     + "auteur = '" + auteur +"' ,"
                     + "' where isbn = '"+isbn+"';";
             executeRequest(SQL);
+            this.updateBookList();
         }
     }
       
     public void deleteBorrow(int isbn, int idCustomer){
-        Book tmp = searchBook(isbn);
-        Customer cTmp = searchCustomer(idCustomer);
-        if(cTmp != null && tmp != null){
-            int i = 0;
-            boolean continuer = true;
-            while( i < myBorrows.size()-1 && continuer ){
-                if(myBorrows.get(i).getIsbn()==isbn && myBorrows.get(i).getNumCustomer()==idCustomer){
-                    continuer = false;
-                    i--;
-                }
-                i++;
-            }
-            myBorrows.remove(i);
+        String SQL = "delete from borrows where isbn = '"+Integer.toString(isbn)+"' and idcustomer = '"+Integer.toString(idCustomer)+"';";
+        if(this.borrowExist(isbn, idCustomer)){
             upBook(isbn);
         }
+        this.executeRequest(SQL);
+        this.updateBorrowList();
+        
     }
     public boolean upBook(int isbn){
         Book tmp = searchBook(isbn);
-        if(tmp!=null){
-            tmp.setQuantite(tmp.getQuantite()+1);
+        if(existBook(isbn)){
+            int quantite = this.searchBookQuantite(isbn);
+            quantite += 1;
+            String SQL = "update books "
+                    + "set quantite = '" + quantite +"';";
+            this.executeRequest(SQL);
+            this.updateBookList();
             return true;
         }
         return false;
     }
+    
+    
+    public boolean reduceBook(int isbn){
+        Book tmp = searchBook(isbn);
+        if(existBook(isbn) && this.searchBookQuantite(isbn) > 0){
+            int quantite = this.searchBookQuantite(isbn);
+            quantite -= 1;
+            String SQL = "update books "
+                    + "set quantite = '" + quantite +"';";
+            this.executeRequest(SQL);
+            this.updateBookList();
+            return true;
+        }
+        return false;    }
     
     public int countBorrowsByCustomer(int id){
         int count=0;
@@ -220,26 +236,55 @@ public class Modele {
         return count;
     }
     
+    public boolean borrowExist(int isbn, int idCustomer){
+        String SQL = "select * from borrows;";
+        boolean ret = false;
+        try { 
+            int isbnTmp, idTmp;
+            ResultSet rs = stmt.executeQuery( SQL );
+                while ( rs.next( ) ) {
+                    isbnTmp = rs.getInt("isbn");
+                    idTmp = rs.getInt("idcustomer");
+                    if(isbnTmp == isbn && idCustomer == idTmp)ret=true;
+                } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+    
     public void addBorrow(int isbn, int idCustomer){
-        Book tmp = searchBook(isbn);
-        Customer cTmp = searchCustomer(idCustomer);
-        if(cTmp != null && tmp != null && countBorrowsByCustomer(idCustomer)<4 && reduceBook(isbn)){
-            Borrow b = new Borrow(isbn, idCustomer);
-            myBorrows.add(b);
+        if(!this.borrowExist(isbn, idCustomer)){
+            String SQL = "insert into borrows values ("+Integer.toString(isbn)+","+Integer.toString(idCustomer)+");";
+            this.executeRequest(SQL);
+            this.reduceBook(isbn);
         }
     }
     
-    public boolean reduceBook(int isbn){
-        Book tmp = searchBook(isbn);
-        if(tmp!=null && tmp.getQuantite()>0){
-            tmp.setQuantite(tmp.getQuantite()-1);
-            return true;
+    public boolean existCustomer(Customer c){
+        boolean ret = false ;
+        String SQL = "select * from customers where numero='"+Integer.toString(c.getNumero())+"';";
+        try { 
+            ResultSet rs = stmt.executeQuery( SQL );
+            while ( rs.next( ) ) {
+                ret = true;
+            } 
+        } catch (SQLException ex) {
+            Logger.getLogger(Modele.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return ret;
     }
     
     public void addCustomer(Customer customer){
-        this.myCustomers.add(customer);
+        if(!this.existCustomer(customer)){
+            String SQL = "insert into customers values("+
+                    Integer.toString(customer.getNumero())+","+
+                    customer.getNom()+","+
+                    customer.getPrenom()+","+
+                    customer.getAdresse()+");";
+            this.executeRequest(SQL);
+            this.updateCustomerList();
+        }
     }
     
     public String toXML(){
@@ -398,19 +443,18 @@ public class Modele {
     
     
     public void deleteCustomer(int numero){
-        Customer c = searchCustomer(numero);
-        if(c != null){            
-            myCustomers.remove(c);
-        }
+        String SQL = "delete from customers where numero ='"+numero+"';";
+        this.executeRequest(SQL);
+        this.updateCustomerList();
     }
     
     public void updateCustomer(Customer c){
-        Customer tmp = searchCustomer(c.getNumero());
-        if(tmp != null){
-            tmp.setNumero(c.getNumero());
-            tmp.setNom(c.getNom());
-            tmp.setPrenom(c.getPrenom());
-            tmp.setAdresse(c.getAdresse());
+        if(this.existCustomer(c)){
+            String SQL = "update customers set nom = '"+c.getNom()+"',"+
+                    "prenom = '"+c.getPrenom()+"',"+
+                    "adresse = '"+c.getAdresse()+"';";
+            this.executeRequest(SQL);
+            this.updateCustomerList();
         }
     }
     public void logoutAll(){
