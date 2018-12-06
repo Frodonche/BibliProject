@@ -42,6 +42,7 @@ public class Customer {
         toReturn += "<nom>"+nom+"</nom>";
         toReturn += "<prenom>"+prenom+"</prenom>";
         toReturn += "<adresse>"+adresse+"</adresse>";
+        toReturn += "<logged>"+logged+"</logged>";
         toReturn += "</customer>";
         
         return toReturn;
@@ -60,6 +61,7 @@ public class Customer {
         toReturn += "\"nom\":"+"\""+nom+"\",";
         toReturn += "\"prenom\":"+"\""+prenom+"\",";
         toReturn += "\"adresse\":"+"\""+adresse+"\"";
+        toReturn += "\"logged\":"+"\""+logged+"\"";
         
         toReturn += "}";
         

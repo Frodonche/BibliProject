@@ -76,7 +76,7 @@ public class CustomerResource {
        
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    @Path("searchCustomerXML")
+    @Path("XML/searchCustomer")
     public String searchCustomerXML(@QueryParam("numero") int numero) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
@@ -89,7 +89,7 @@ public class CustomerResource {
     }
 
     @GET
-    @Path("searchCustomerJSON")
+    @Path("JSON/searchCustomer")
     @Produces(MediaType.APPLICATION_JSON)
     public String searchCustomerJSON(@QueryParam("numero") int numero) {
         Modele instance = Modele.getInstance();
@@ -102,7 +102,8 @@ public class CustomerResource {
         }        
     }
      
-    @PUT
+    @POST
+    @Path("updateCustomer")
     public void updateCustomer(@FormParam("numero") int numero,
                @QueryParam("nom") String nom,
                @QueryParam("prenom") String prenom,
@@ -120,13 +121,14 @@ public class CustomerResource {
     
     @POST
     @Path("borrow")
-    public void borrow(@FormParam("numero") int numero,
-            @FormParam("nom") String nom,
+    public String borrow(@FormParam("numero") int numero,
             @FormParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
         Customer c = instance.searchCustomer(numero);
         if(c!=null && c.getLogged() && (instance.countBorrowsByCustomer(numero)< 4)) {
             instance.addBorrow(isbn, numero);
+            return "Borrowed";
         }
+        return "Not borrowed";
     }  
 }

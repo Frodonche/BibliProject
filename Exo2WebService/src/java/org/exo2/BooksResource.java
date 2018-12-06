@@ -37,36 +37,36 @@ public class BooksResource {
         
     
     @GET
-    @Path("isAvailableXML")
+    @Path("XML/isAvailable")
     @Produces(MediaType.APPLICATION_XML)
     public String isAvailableXML(@QueryParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
         Book b = instance.searchBook(isbn);
         String toReturn = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         if(b != null && b.getQuantite() > 0){
-            return toReturn+"true";
+            return toReturn+"<available>true</available>";
         } else {
-            return toReturn+"false";
+            return toReturn+"<available>false</available>";
         }
     }
 
     @GET
-    @Path("isAvailableJSON")
+    @Path("JSON/isAvailable")
     @Produces(MediaType.APPLICATION_JSON)
     public String isAvailableJSON(@QueryParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
         Book b = instance.searchBook(isbn);
         String toReturn = "";
         if(b != null && b.getQuantite() > 0){
-            return toReturn+"{'available' : true}";
+            return toReturn+"{\"available\" : true}";
         } else {
-            return toReturn+"{'available' : false}";
+            return toReturn+"{\"available\" : false}";
         }
     }
     
     
     @GET
-    @Path("listXML")
+    @Path("XML/list")
     @Produces(MediaType.APPLICATION_XML)
     public String listXML() {
         Modele instance = Modele.getInstance();
@@ -74,7 +74,7 @@ public class BooksResource {
     }    
     
     @GET
-    @Path("listJSON")
+    @Path("JSON/list")
     @Produces(MediaType.APPLICATION_JSON)
     public String listJSON() {
         Modele instance = Modele.getInstance();
@@ -83,7 +83,7 @@ public class BooksResource {
     
     
     @GET
-    @Path("searchByTitleXML")
+    @Path("XML/searchByTitle")
     @Produces(MediaType.APPLICATION_XML)
     public String searchByTitleXML(@QueryParam("titre") String title) {
         Modele instance = Modele.getInstance();
@@ -92,7 +92,7 @@ public class BooksResource {
     }   
     
     @GET
-    @Path("searchByTitleJSON")
+    @Path("JSON/searchByTitle")
     @Produces(MediaType.APPLICATION_JSON)
     public String searchByTitleJSON(@QueryParam("titre") String title) {
         Modele instance = Modele.getInstance();
@@ -103,7 +103,7 @@ public class BooksResource {
     
     
     @GET
-    @Path("searchByAuthorXML")
+    @Path("XML/searchByAuthor")
     @Produces(MediaType.APPLICATION_XML)
     public String searchByAuthorXML(@QueryParam("auteur") String author) {
         Modele instance = Modele.getInstance();
@@ -112,7 +112,7 @@ public class BooksResource {
     }   
     
     @GET
-    @Path("searchByAuthorJSON")
+    @Path("JSON/searchByAuthor")
     @Produces(MediaType.APPLICATION_JSON)
     public String searchByAuthorJSON(@QueryParam("auteur") String author) {
         Modele instance = Modele.getInstance();
@@ -121,7 +121,7 @@ public class BooksResource {
     }   
 
     @GET
-    @Path("searchByCategoryXML")
+    @Path("XML/searchByCategory")
     @Produces(MediaType.APPLICATION_XML)
     public String searchByCategoryXML(@QueryParam("categorie") String categorie) {
         Modele instance = Modele.getInstance();
@@ -130,7 +130,7 @@ public class BooksResource {
     }   
     
     @GET
-    @Path("searchByCategoryJSON")
+    @Path("JSON/searchByCategory")
     @Produces(MediaType.APPLICATION_JSON)
     public String searchByCategoryJSON(@QueryParam("categorie") String categorie) {
         Modele instance = Modele.getInstance();
@@ -139,7 +139,7 @@ public class BooksResource {
     }   
     
     @GET
-    @Path("searchByIsbnXML")
+    @Path("XML/searchByIsbn")
     @Produces(MediaType.APPLICATION_XML)
     public String searchByIsbnXML(@QueryParam("isbn") int isbn) {
         Modele instance = Modele.getInstance();
@@ -153,7 +153,7 @@ public class BooksResource {
     }   
     
     @GET
-    @Path("searchByIsbnJSON")
+    @Path("JSON/searchByIsbn")
     @Produces(MediaType.APPLICATION_JSON)
     public String searchByIsbnJSON(@QueryParam("isbn") int isbn) {
        Modele instance = Modele.getInstance();
@@ -178,7 +178,9 @@ public class BooksResource {
         };
     }
 
-    @PUT
+
+    @POST
+    @Path("updateBook")
     public void updateBook(@FormParam("titre") String titre,
                @FormParam("auteur") String author,
                @FormParam("categorie") String category,
@@ -187,5 +189,13 @@ public class BooksResource {
         Modele instance = Modele.getInstance();
         instance.updateBook(author, category, isbn, quantity, titre);
     }
+    
+    @POST
+    @Path("deleteBook")
+    public void deleteCustomer(@FormParam("isbn") int isbn) {
+        Modele instance = Modele.getInstance();
+        instance.deleteBook(isbn);
+    }
+
 
 }
