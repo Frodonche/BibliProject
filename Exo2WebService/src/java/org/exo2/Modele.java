@@ -248,23 +248,19 @@ public class Modele {
     
     
     public Book searchBook(int isbn){
-        int i = 0;
-        while ( i < myBooks.size()-1 ){
-            if ( myBooks.get(i).getIsbn() == isbn ){
-                return myBooks.get(i);
+        for(Book b: myBooks){
+            if(b.getIsbn() == isbn){
+                return b;
             }
-            i++;
         }
         return null;
     }
     
     public Customer searchCustomer(int numero){
-        int i = 0;
-        while ( i < myCustomers.size()-1 ){
-            if ( myCustomers.get(i).getNumero() == numero ){
-                return myCustomers.get(i);
+        for(Customer c: myCustomers){
+            if(c.getNumero() == numero){
+                return c;
             }
-            i++;
         }
         return null;
     }
@@ -293,28 +289,28 @@ public class Modele {
 
     public ArrayList<Book> searchBookAuteur(String auteur){
         ArrayList<Book> books = new ArrayList<>();
-        int i = 0;
-        while (i<myBooks.size()-1){
-            if(myBooks.get(i).getAuteur().equals(auteur))books.add(myBooks.get(i));
-            i++;
+        for(Book b: myBooks){
+            if(b.getAuteur().equals(auteur)){
+                books.add(b);            
+            }
         }
         return books;
     }
     public ArrayList<Book> searchBookTitre(String titre){
         ArrayList<Book> books = new ArrayList<>();
-        int i = 0;
-        while (i<myBooks.size()-1){
-            if(myBooks.get(i).getTitre().equals(titre))books.add(myBooks.get(i));
-            i++;
+        for(Book b: myBooks){
+            if(b.getTitre().equals(titre)){
+                books.add(b);            
+            }
         }
         return books;
     }
     public ArrayList<Book> searchBookCategorie(String categorie){
         ArrayList<Book> books = new ArrayList<>();
-        int i = 0;
-        while (i<myBooks.size()-1){
-            if(myBooks.get(i).getCategorie().equals(categorie))books.add(myBooks.get(i));
-            i++;
+        for(Book b: myBooks){
+            if(b.getCategorie().equals(categorie)){
+                books.add(b);            
+            }
         }
         return books;
     }
